@@ -2,7 +2,8 @@ use actix_web::{get, web, App, HttpRequest, HttpResponse, HttpServer, Responder,
 use actix_files::Files;
 use serde::Serialize;
 use serde_json::json;
-use handlebars::Handlebars;
+// Esta linha agora vai funcionar
+use handlebars::{DirectorySourceOptions, Handlebars};
 
 // Estrutura da Notícia (mesma de antes)
 #[derive(Serialize)]
@@ -65,6 +66,9 @@ async fn main() -> std::io::Result<()> {
     
     // --- Configuração do Handlebars (Tarefa 01) ---
     let mut hb = Handlebars::new();
+
+    // ADICIONE ESTA LINHA:
+    hb.set_strict_mode(false); // Isso registra os helpers de herança (block, inline)
     
     // Registra os templates parciais (header/footer)
     hb.register_partial("header", 
@@ -74,9 +78,16 @@ async fn main() -> std::io::Result<()> {
         std::fs::read_to_string("templates/partials/footer.hbs").unwrap()
     ).unwrap();
 
-    // Registra os templates de página principais
-    hb.register_templates_directory(".hbs", "./templates")
-       .unwrap();
+    // Esta função agora vai existir
+    hb.register_templates_directory(
+        "./templates", 
+        DirectorySourceOptions { 
+            tpl_extension: ".hbs".to_string(),
+            hidden: false,
+            temporary: false,
+        },
+    )
+    .unwrap();
     
     // Coloca o Handlebars em um estado gerenciado pelo Actix (web::Data)
     let hb_data = web::Data::new(hb);
