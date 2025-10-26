@@ -1,0 +1,10 @@
+{{!-- Usa o templates/base.hbs como layout e passa "Home" como título da página --}}
+{{#> base page_title=page_title}}
+    
+    {{!-- Define o conteúdo para o bloco "content" em base.hbs --}}
+    {{#*inline "content"}}
+        <h2>{{content_message}}</h2>
+        <p>Esta página está em construção.</p>
+    {{/inline}}
+
+{{/base}}

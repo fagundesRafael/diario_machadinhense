@@ -1,0 +1,10 @@
+{{!-- Usa o templates/base.hbs como layout e passa o nome da categoria como título --}}
+{{#> base page_title=page_title}}
+    
+    {{!-- Define o conteúdo para o bloco "content" em base.hbs --}}
+    {{#*inline "content"}}
+        <h2>{{category_name}}</h2>
+        <p>{{content_message}}</p>
+    {{/inline}}
+
+{{/base}}
